@@ -10,6 +10,14 @@ import { useAuthStore } from "../store/store.js";
 import { loginUser } from "../helper/apiRequest.js";
 
 const Password = () => {
+  const navigate = useNavigate();
+
+  const username = useAuthStore((state) => state.auth.username);
+
+  const [{ isLoading, apiData, serverError }] = useFetch(
+    `user/${username ? username : localStorage.getItem("loginAppUsername")}`
+  );
+
   const formik = useFormik({
     initialValues: {
       password: "",
@@ -50,6 +58,14 @@ const Password = () => {
         });
     },
   });
+
+  if (isLoading) {
+    return <h1 className="text-2xl font-bold">Loading...</h1>;
+  }
+
+  if (serverError) {
+    return <h1 className="text-xl text-red-500">{serverError?.message}</h1>;
+  }
 
   return (
     <div className="container mx-auto">
