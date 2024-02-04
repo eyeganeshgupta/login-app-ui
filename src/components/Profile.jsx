@@ -13,6 +13,14 @@ import { updateUser } from "../helper/apiRequest";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const navigate = useNavigate();
+
+  let username = useAuthStore((state) => state.auth.username);
+
+  const [{ isLoading, apiData, serverError }] = useFetch(
+    `user/${username ? username : localStorage.getItem("loginAppUsername")}`
+  );
+
   const [file, setFile] = useState();
 
   const formik = useFormik({
@@ -27,6 +35,21 @@ const Profile = () => {
     validate: validateProfile,
     validateOnBlur: false,
     validateOnChange: false,
+    onSubmit: async (values) => {
+      values = await Object.assign(values, {
+        profile: file || apiData?.data?.profile || "",
+      });
+      let updateUserPromise = updateUser(values);
+
+      updateUserPromise
+        .then((response) => {
+          console.log(response);
+          toast.success(response?.message);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   });
 
   // * formik doesn't support file upload, so I need to create this handler
@@ -41,6 +64,14 @@ const Profile = () => {
     localStorage.removeItem("loginAppUsername");
     navigate("/");
   };
+
+  if (isLoading) {
+    return <h1 className="text-2xl font-bold">Loading...</h1>;
+  }
+
+  if (serverError) {
+    return <h1 className="text-xl text-red-500">{serverError?.message}</h1>;
+  }
 
   return (
     <div className="container mx-auto">
