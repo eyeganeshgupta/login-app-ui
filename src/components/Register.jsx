@@ -2,8 +2,47 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import avatar from "../assets/profile.png";
 import styles from "../styles/Username.module.css";
+import toast, { Toaster } from "react-hot-toast";
+import { useFormik } from "formik";
+import { validateRegister } from "../helper/validate";
+import convertToBase64 from "../helper/convert";
+import { registerUser } from "../helper/apiRequest";
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const [file, setFile] = useState();
+
+  const formik = useFormik({
+    initialValues: {
+      email: "eyeganeshgupta@gmail.com",
+      username: "eyeganeshgupta",
+      password: "eye@ganesh",
+    },
+
+    validate: validateRegister,
+    validateOnBlur: false,
+    validateOnChange: false,
+    onSubmit: async (values) => {
+      values = await Object.assign(values, { profile: file || "" });
+      let registerPromise = registerUser(values);
+
+      /*
+      toast.promise(registerPromise, {
+        loading: "Creating...",
+        success: <b>Registered Successfully...!</b>,
+        error: <b>{registerPromise.message}</b>,
+      });
+      */
+    },
+  });
+
+  // * formik doesn't support file upload, so I need to create this handler
+  const onUpload = async (event) => {
+    const base64 = await convertToBase64(event.target.files[0]);
+    setFile(base64);
+  };
+
   return (
     <div className="container mx-auto">
       <Toaster position="top-center" reverseOrder={false}></Toaster>
