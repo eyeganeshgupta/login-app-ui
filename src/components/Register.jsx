@@ -34,6 +34,20 @@ const Register = () => {
         error: <b>{registerPromise.message}</b>,
       });
       */
+
+      registerPromise
+        .then((value) => {
+          console.log(value);
+          toast.success(value);
+          setTimeout(() => {
+            navigate("/");
+          }, 2000);
+        })
+        .catch((value) => {
+          console.log(value);
+          toast.error(value);
+          return;
+        });
     },
   });
 
