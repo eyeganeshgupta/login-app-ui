@@ -14,9 +14,23 @@ import { validatePassword } from "../helper/validate";
 */
 
 const Recovery = () => {
+  const navigate = useNavigate();
+
   const username = useAuthStore((state) => state.auth);
 
   const [otp, setOtp] = useState();
+
+  useEffect(() => {
+    function fetchOTP() {
+      generateOTP(username).then((OTP) => {
+        if (OTP) {
+          return toast.success("OTP has been send to your email");
+        }
+        return toast.error("Problem while generating OTP");
+      });
+    }
+    fetchOTP();
+  }, [username]);
 
   return (
     <div className="container mx-auto">
