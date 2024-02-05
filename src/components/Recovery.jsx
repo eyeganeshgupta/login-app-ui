@@ -46,6 +46,18 @@ const Recovery = () => {
     }
   }
 
+  // ! Handler function for reset otp
+  function resendOTP() {
+    let sendPromise = generateOTP(username);
+    toast.promise(sendPromise, {
+      loading: "Sending",
+      success: <b>OTP has been send to your email!</b>,
+      error: <b>Couldn't send it, Try again later!</b>,
+    });
+
+    sendPromise.then((otp) => {});
+  }
+
   return (
     <div className="container mx-auto">
       <Toaster position="top-center" reverseOrder={false}></Toaster>
