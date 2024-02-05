@@ -32,6 +32,20 @@ const Recovery = () => {
     fetchOTP();
   }, [username]);
 
+  async function onSubmitHandler(e) {
+    e.preventDefault();
+    try {
+      let { status } = await verifyOTP({ username, otp });
+
+      if (status === 201) {
+        toast.success("OTP verified successfully !");
+        return navigate("/reset");
+      }
+    } catch (error) {
+      return toast.error("Wrong OTP\nCheck email again!");
+    }
+  }
+
   return (
     <div className="container mx-auto">
       <Toaster position="top-center" reverseOrder={false}></Toaster>
