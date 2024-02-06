@@ -8,6 +8,23 @@ import { validateUsername } from "../helper/validate";
 import { useAuthStore } from "../store/store.js";
 
 const Username = () => {
+  const navigate = useNavigate();
+  // const username = useAuthStore((state) => state.auth.username);
+  const setUsername = useAuthStore((state) => state.setUsername);
+
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+    },
+    validate: validateUsername,
+    validateOnBlur: false,
+    validateOnChange: false,
+    onSubmit: async (values) => {
+      setUsername(values.username);
+      navigate("/password");
+    },
+  });
+
   return (
     <div className="container mx-auto">
       {/* Toaster */}
