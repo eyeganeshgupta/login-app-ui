@@ -22,6 +22,24 @@ const Reset = () => {
     validate: validateResetPassword,
     validateOnBlur: false,
     validateOnChange: false,
+    onSubmit: async (values) => {
+      let resetPromise = resetPassword({
+        username: username
+          ? username
+          : localStorage.getItem("loginAppUsername"),
+        password: values.password,
+      });
+
+      toast.promise(resetPromise, {
+        loading: "Updating",
+        success: <b>Password reset successfully!</b>,
+        error: <b>Couldn't reset!</b>,
+      });
+
+      resetPromise.then(() => {
+        navigate("/password");
+      });
+    },
   });
 
   if (isLoading) {
