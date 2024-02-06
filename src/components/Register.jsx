@@ -15,9 +15,9 @@ const Register = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: "eyeganeshgupta@gmail.com",
-      username: "eyeganeshgupta",
-      password: "eye@ganesh",
+      email: "",
+      username: "",
+      password: "",
     },
 
     validate: validateRegister,
