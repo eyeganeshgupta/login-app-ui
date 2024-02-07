@@ -51,3 +51,21 @@ export async function registerUser(credentials) {
     return Promise.reject(error?.response?.data?.message);
   }
 }
+
+// ! Login function
+export async function loginUser({ username, password }) {
+  try {
+    if (username) {
+      const response = await axios.post("/api/login", {
+        username,
+        password,
+      });
+      return response?.data;
+    }
+  } catch (error) {
+    // console.log(error?.response?.status);
+    // console.log(error?.response?.data?.message);
+    // return error?.response?.data?.message;
+    return Promise.reject(error?.response?.data?.message);
+  }
+}
