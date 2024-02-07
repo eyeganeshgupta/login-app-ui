@@ -85,3 +85,38 @@ export async function updateUser(user) {
     return Promise.reject(error?.response?.data?.message);
   }
 }
+
+// ! Generate OTP
+export async function generateOTP(username) {
+  try {
+    const response = await axios.get("/api/generate-otp", {
+      params: { username },
+    });
+
+    const status = response?.status;
+    const otp = response?.data?.code;
+
+    if (status === 201) {
+      let response = await getUser({ username });
+
+      const email = response?.data?.email;
+
+      let text = `Your password recovery OTP is ${otp}. Verify and recover your password`;
+
+      await axios.post("/api/register-mail", {
+        username,
+        userEmail: email,
+        text,
+        subject: "Password Recovery OTP",
+      });
+    }
+
+    return Promise.resolve(otp);
+  } catch (error) {
+    // console.log(error);
+    // console.log(error?.response?.status);
+    // console.log(error?.response?.data?.message);
+    // return error?.response?.data?.message;
+    return Promise.reject(error?.response?.data?.message);
+  }
+}
