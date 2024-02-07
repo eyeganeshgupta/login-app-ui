@@ -24,3 +24,30 @@ export async function getUser({ username }) {
     return { error: "Password doesn't match...!" };
   }
 }
+
+// ! Register user function
+export async function registerUser(credentials) {
+  try {
+    const response = await axios.post("/api/register", credentials);
+    const status = response?.status;
+    const message = response?.data?.message;
+
+    let { username, email } = credentials;
+
+    // TODO: send mail
+    if (status === 201) {
+      await axios.post("/api/register-mail", {
+        username,
+        userEmail: email,
+        text: message,
+      });
+    }
+    return message;
+  } catch (error) {
+    // return Promise.reject({ error });
+    // console.log(error?.response?.status);
+    // console.log(error?.response?.data?.message);
+    // return error?.response?.data?.message;
+    return Promise.reject(error?.response?.data?.message);
+  }
+}
