@@ -69,3 +69,19 @@ export async function loginUser({ username, password }) {
     return Promise.reject(error?.response?.data?.message);
   }
 }
+
+// ! Update user profile function
+export async function updateUser(user) {
+  try {
+    const token = await localStorage.getItem("loginAppToken");
+    const response = await axios.put("/api/update-user", user, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response?.data;
+  } catch (error) {
+    // console.log(error?.response?.status);
+    // console.log(error?.response?.data?.message);
+    // return error?.response?.data?.message;
+    return Promise.reject(error?.response?.data?.message);
+  }
+}
