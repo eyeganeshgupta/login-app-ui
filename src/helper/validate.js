@@ -13,3 +13,13 @@ export async function validateUsername(values) {
   }
   return error;
 }
+
+// ! Verify Username
+function verifyUsername(error = {}, values) {
+  if (!values.username) {
+    error.username = toast.error("Username Required...!");
+  } else if (values.username.includes(" ")) {
+    error.username = toast.error("Invalid Username...!");
+  }
+  return error;
+}
