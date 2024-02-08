@@ -120,3 +120,23 @@ export async function generateOTP(username) {
     return Promise.reject(error?.response?.data?.message);
   }
 }
+
+// ! Verify OTP
+export async function verifyOTP({ username, otp }) {
+  try {
+    const response = await axios.get("/api/verify-otp", {
+      params: { username, otp },
+    });
+    const status = response?.status;
+    const message = response?.data?.message;
+    return {
+      status,
+      message,
+    };
+  } catch (error) {
+    // console.log(error?.response?.status);
+    // console.log(error?.response?.data?.message);
+    // return error?.response?.data?.message;
+    Promise.reject(error?.response?.data?.message);
+  }
+}
