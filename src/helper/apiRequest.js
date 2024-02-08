@@ -140,3 +140,28 @@ export async function verifyOTP({ username, otp }) {
     Promise.reject(error?.response?.data?.message);
   }
 }
+
+// ! Reset password
+export async function resetPassword({ username, password }) {
+  try {
+    const {
+      status,
+      data: { message },
+    } = await axios.put("/api/reset-password", {
+      username,
+      password,
+    });
+
+    // console.log(status);
+    // console.log(message);
+
+    return {
+      status,
+      message,
+    };
+  } catch (error) {
+    // console.log(error?.response?.status);
+    // console.log(error?.response?.data?.message);
+    return error?.response?.data?.message;
+  }
+}
