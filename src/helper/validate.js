@@ -23,3 +23,9 @@ function verifyUsername(error = {}, values) {
   }
   return error;
 }
+
+// ! Validate password page "password"
+export async function validatePassword(values) {
+  const error = verifyPassword({}, values);
+  return error;
+}
