@@ -79,3 +79,9 @@ export async function validateRegister(values) {
 
   return error;
 }
+
+// ! Validate profile
+export async function validateProfile(values) {
+  const error = verifyEmail({}, values);
+  return error;
+}
