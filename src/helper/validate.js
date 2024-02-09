@@ -70,3 +70,12 @@ function verifyEmail(error = {}, values) {
 
   return error;
 }
+
+// ! Validate Register Form
+export async function validateRegister(values) {
+  const error = verifyUsername({}, values);
+  verifyPassword(error, values);
+  verifyEmail(error, values);
+
+  return error;
+}
