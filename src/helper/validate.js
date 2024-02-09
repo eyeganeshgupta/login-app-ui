@@ -29,3 +29,20 @@ export async function validatePassword(values) {
   const error = verifyPassword({}, values);
   return error;
 }
+
+// ! Verify Password
+function verifyPassword(error = {}, values) {
+  const specialChars = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
+
+  if (!values.password) {
+    error.password = toast.error("Password Required...!");
+  } else if (values.password.includes(" ")) {
+    error.password = toast.error("Wrong Password...!");
+  } else if (values.password.length < 4) {
+    error.password = toast.error("Password must be more than 4 character");
+  } else if (!specialChars.test(values.password)) {
+    error.password = toast.error("Password must have special character");
+  }
+
+  return error;
+}
